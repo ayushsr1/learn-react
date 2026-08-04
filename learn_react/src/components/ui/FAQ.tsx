@@ -51,8 +51,7 @@ function FAQ() {
               <div>
                 <Badge
                   variant="outline"
-                  className="px-3.5 py-1 text-xs font-semibold rounded-full bg-teal-500/10 text-teal-400 border-teal-500/20 hover:bg-teal-500/20 transition-colors"
-                >
+                  className="px-3.5 py-1 text-xs font-semibold rounded-full bg-teal-500/10 text-teal-400 border-teal-500/20 hover:bg-teal-500/20 transition-colors" render={undefined}                >
                   FAQ
                 </Badge>
               </div>
