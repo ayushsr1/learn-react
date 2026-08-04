@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import { BrandLogo } from "@/components/ui/BrandLogo"
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/Button"
+import { Menu, X } from "lucide-react" // Import Menu and Close icons
 
 interface NavLink {
     label: string
@@ -115,22 +116,12 @@ const Navbar: React.FC<NavbarProps> = ({
                     aria-expanded={mobileMenuOpen}
                     aria-label="Toggle menu"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-5 w-5 text-white/90"
-                    >
-                        <path d="M4 5h16" />
-                        <path d="M4 12h16" />
-                        <path d="M4 19h16" />
-                    </svg>
+                    {/* Swaps icon based on state */}
+                        {mobileMenuOpen ? (
+                            <X className="h-5 w-5 text-teal-400" />
+                        ) : (
+                            <Menu className="h-5 w-5 text-teal-400" />
+                        )}                
                 </Button>
             </div>
 
