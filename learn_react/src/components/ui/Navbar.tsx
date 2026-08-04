@@ -30,7 +30,7 @@ const Navbar: React.FC<NavbarProps> = ({
     const location = useLocation()
     const navigate = useNavigate()
 
-    const navbarRef = useRef<HTMLHeadingElement>(null)
+    const navbarRef = useRef<HTMLElement | null>(null)
 
     const isActiveLink = (href: string) => {
         if (href === "/") return location.pathname === "/"
@@ -62,7 +62,10 @@ const Navbar: React.FC<NavbarProps> = ({
     }, [mobileMenuOpen])
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
+        <header
+            ref={navbarRef}
+            className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md"
+        >
             <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
                 <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
                     <BrandLogo />
