@@ -36,11 +36,11 @@ const Hero: React.FC<Hero> = ({
     secondaryButtonHref = "/program",
     disciplinesTitle = "Training includes 5 core rhythmic gymnastics disciplines",
     partners = [
-        { name: "Jump Rope", icon: "🩰", href: "#program" },
-        { name: "Hoop", icon: "⭕", href: "#program" },
-        { name: "Ball", icon: "⚽", href: "#program" },
-        { name: "Clubs", icon: "🪄", href: "#program" },
-        { name: "Ribbon", icon: "🎗️", href: "#program" }
+        { name: "Jump Rope", icon: "🩰"},
+        { name: "Hoop", icon: "⭕" },
+        { name: "Ball", icon: "⚽"},
+        { name: "Clubs", icon: "🪄" },
+        { name: "Ribbon", icon: "🎗️" }
     ]
 }) => {
 
@@ -99,16 +99,21 @@ const Hero: React.FC<Hero> = ({
                             {disciplinesTitle}
                         </p>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 animate-fade-slide-in-2 text-white/70 mt-6 items-center justify-items-center gap-4">
-                            {partners.map((partner, index) => (
-                                <Link
-                                    key={index}
-                                    to={partner.href}
-                                    className="inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-full transition-colors shadow-sm"                                    
-                                >
-                                {partner.icon && <span className="mr-1.5">{partner.icon}</span>}
-                                <span>{partner.name}</span>
-                                </Link>                
-                            ))}
+                            {partners.map((partner, index) => {
+                                const isLastItem = index === partners.length - 1
+
+                                return (
+                                    <div 
+                                        key={partner.id || partner.name || index} 
+                                        className={`flex items-center gap-2 bg-slate-100 text-slate-800 px-3 py-1.5 rounded-xl ${
+                                            !isLastItem ? 'border-r border-slate-200 pr-4' : ''
+                                        }`}
+                                    >
+                                        {partner.icon && <span className="shrink-0 flex items-center text-slate-500">{partner.icon}</span>}
+                                        <span className="font-medium text-sm leading-none">{partner.name}</span>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>
