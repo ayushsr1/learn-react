@@ -1,12 +1,12 @@
 import { PhoneCall } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/Badge";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/Accordion";
+import { Button } from "@/components/ui/Button";
 
 const marinaFaqs = [
   {
