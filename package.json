@@ -1,5 +1,9 @@
 {
-  "dependencies": {
-    "react-router-dom": "^7.18.2"
+  "name": "learn-react-root",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix learn_react run dev",
+    "build": "npm --prefix learn_react install && npm --prefix learn_react run build",
+    "preview": "npm --prefix learn_react run preview"
   }
 }
