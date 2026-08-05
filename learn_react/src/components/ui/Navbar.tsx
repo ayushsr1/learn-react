@@ -20,7 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({
     ctaButtonText = "Book a Trial",
     ctaButtonHref = "/contact",
     navLinks = [
-        { label: "About Marina", href: "/about" },
+        { label: "About", href: "/about" },
         { label: "Program", href: "/program" },
         { label: "Schedule & Pricing", href: "/pricing" },
         { label: "FAQ", href: "/faq" }
@@ -87,7 +87,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
                         <Button
                             variant="default"
-                            size="sm"
+                            size="md"
                             className="ml-1 rounded-full bg-white px-3.5 py-2 text-sm font-medium text-neutral-900 hover:bg-teal-500"
                             onClick={handleCtaClick}
                         >
@@ -114,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 <Button
                     variant="ghost"
                     size="icon-sm"
-                    className="rounded-full bg-white/10 ring-1 ring-white/15 backdrop-blur md:hidden"
+                    className="rounded-l-2xl bg-white/10 ring-1 ring-white/15 backdrop-blur md:hidden"
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     aria-expanded={mobileMenuOpen}
                     aria-label="Toggle menu"

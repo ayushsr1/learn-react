@@ -1,10 +1,11 @@
 import './App.css'
 import { Routes, Route, Navigate } from "react-router-dom"
 import Hero from "@/components/ui/Hero"
-import About_Marina from "@/components/ui/About-Marina"
 import { FAQ } from "@/components/ui/FAQ"
 import Navbar from "@/components/ui/Navbar"
-import Program from "@/components/ui/Program"
+import Pricing from '@/components/ui/Pricing'
+import About from '@/components/ui/About'
+import Program from './components/ui/Program'
 
 function App() {
   return (
@@ -12,9 +13,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Hero />} />
-        <Route path="/about" element={<About_Marina />} />
-        <Route path="/program" element={<Program />} />
+        <Route path="/pricing" element={<Pricing />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/program" element={<Program />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </main>
