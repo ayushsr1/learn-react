@@ -17,24 +17,22 @@ export interface SoloProfile {
 }
 
 const DEFAULT_PROFILE: SoloProfile = {
-  name: 'Marina Kostova',
-  role: 'HEAD COACH & FOUNDER',
+  name: 'Marina Mostovskaia',
+  role: 'Head Coach & Founder',
   image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800',
   bio: 'With over a decade of elite training experience, Marina specializes in high-performance conditioning, movement optimization, and holistic physical development. She has coached professional athletes and enthusiasts alike to reach peak physical capacity.',
   stats: [
-    { label: 'Years Experience', value: '10+' },
-    { label: 'Athletes Coached', value: '120+' },
-    { label: 'Certifications', value: '9' },
+    { label: 'Years of Competitive Excellence', value: '8+' }
   ],
   highlights: [
-    'Master Degree in Sports Science & Physical Education',
-    'Certified High-Performance Movement Specialist',
-    'Former Competitive Gymnast & National Lead Coach',
+    'Active Competitive Rhythmic Gymnast with 8+ years of intensive training',
+    'Specialist in Safe Stretching and Anatomical Conditioning',
+    'Expert in Technique Correction and Joint Safety',
   ],
   social: {
     instagram: 'https://instagram.com',
     linkedin: 'https://linkedin.com',
-    website: 'https://example.com',
+    website: 'https://marinagym.vercel.app/',
   },
 };
 
@@ -112,7 +110,7 @@ export default function About({ profile = DEFAULT_PROFILE }: AboutProps) {
               </p>
 
               {/* Key Quick Stats Bar */}
-              <div className="grid grid-cols-3 gap-4 p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 mb-8">
+              <div className="p-4 rounded-xl bg-slate-900/60 border max-w-xs border-slate-800/80 mb-8">
                 {profile.stats.map((stat, i) => (
                   <div key={i} className="text-center sm:text-left sm:pl-2">
                     <p className="text-2xl sm:text-3xl font-bold text-teal-400 tracking-tight">{stat.value}</p>

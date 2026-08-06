@@ -16,8 +16,7 @@ const marinaFaqs = [
   },
   {
     question: "How does remote gymnastics video analysis actually work?",
-    answer:
-      "Simply record your skill or routine from your smartphone and upload it through your athlete dashboard. Within 24–48 hours, Marina provides frame-by-frame visual notes, voiceover corrections, and customized drills to fix technique flaws before they become bad habits.",
+    answer: "Live Zoom Sessions - All classes are 100% live with real-time feedback.",
   },
   {
     question: "Is online coaching effective for beginners, or only advanced gymnasts?",
@@ -46,7 +45,7 @@ function FAQ() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* Left Column: Heading & CTA */}
-          <div className="lg:col-span-5 flex flex-col justify-between h-full space-y-6">
+          <div className="lg:col-span-5 flex flex-col space-y-6">
             <div className="space-y-4">
               <div>
                 <Badge
@@ -80,12 +79,12 @@ function FAQ() {
 
           {/* Right Column: Interactive Accordion */}
           <div className="lg:col-span-7">
-            <Accordion type="single" collapsible className="w-full space-y-4">
+            <Accordion type="single" collapsible className="w-full space-y-4 min-h-[360px]">
               {marinaFaqs.map((faq, index) => (
-                <AccordionItem
+                <AccordionItem  
                   key={index}
                   value={`faq-${index}`}
-                  className="rounded-2xl border border-slate-800/80 bg-slate-900/40 px-6 py-1 transition-colors data-[state=open]:border-teal-500/40 data-[state=open]:bg-slate-900/80"
+                  className="overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/40 px-6 py-1 transition-colors data-[state=open]:border-teal-500/40 data-[state=open]:bg-slate-900/80"
                 >
                   <AccordionTrigger className="text-left text-base font-semibold text-slate-200 hover:text-teal-400 transition-colors py-4">
                     {faq.question}

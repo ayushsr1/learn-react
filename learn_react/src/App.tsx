@@ -5,6 +5,7 @@ import { FAQ } from "@/components/ui/FAQ"
 import Navbar from "@/components/ui/Navbar"
 import Pricing from '@/components/ui/Pricing'
 import About from '@/components/ui/About'
+import Contact from '@/components/ui/Contact'
 import Program from './components/ui/Program'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/about" element={<About />} />
         <Route path="/program" element={<Program />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </main>

@@ -17,7 +17,7 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-    ctaButtonText = "Book a Trial",
+    ctaButtonText = "Contact Us",
     ctaButtonHref = "/contact",
     navLinks = [
         { label: "About", href: "/about" },
