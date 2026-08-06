@@ -43,43 +43,44 @@ export default async function handler(req, res) {
     `;
 
     const apiKey = process.env.GEMINI_API_KEY;
-    const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
-    let url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    const modelsToTry = [
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-8b:generateContent',
+      'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
+    ];
 
-    let apiResponse = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: message }] }],
-        systemInstruction: { parts: [{ text: systemInstruction }] },
-        generationConfig: { temperature: 0.7 }
-      })
-    });
+    let apiResponse = null;
+    let data = null;
 
-    // Fallback to gemini-2.0-flash if modelName returned 404
-    if (apiResponse.status === 404) {
-      const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-      apiResponse = await fetch(fallbackUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: message }] }],
-          systemInstruction: { parts: [{ text: systemInstruction }] },
-          generationConfig: { temperature: 0.7 }
-        })
-      });
+    for (const endpointUrl of modelsToTry) {
+      try {
+        const fullUrl = `${endpointUrl}?key=${apiKey}`;
+        apiResponse = await fetch(fullUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: message }] }],
+            systemInstruction: { parts: [{ text: systemInstruction }] },
+            generationConfig: { temperature: 0.7 }
+          })
+        });
+
+        data = await apiResponse.json();
+
+        if (apiResponse.ok && data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+          return res.status(200).json({
+            success: true,
+            reply: data.candidates[0].content.parts[0].text
+          });
+        }
+      } catch (err) {
+        console.error(`Attempt with ${endpointUrl} failed:`, err);
+      }
     }
 
-    const data = await apiResponse.json();
-
-    if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-      return res.status(200).json({
-        success: true,
-        reply: data.candidates[0].content.parts[0].text
-      });
-    } else {
-      throw new Error(JSON.stringify(data));
-    }
+    // If all models failed, throw details of the last attempt
+    throw new Error(data ? JSON.stringify(data) : "All Gemini model endpoints failed.");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
