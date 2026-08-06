@@ -10,26 +10,33 @@ app.use(express.json());
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 // Helper function to scan a directory and merge file contents
+// ✅ REPLACE the readComponentFiles function in api/index.js with this:
 function readComponentFiles(dirPath) {
   let combinedContent = '';
   try {
+    // Double check that the folder actually exists inside the bundle
     if (fs.existsSync(dirPath)) {
       const files = fs.readdirSync(dirPath);
       
       files.forEach(file => {
-        // Only read front-end component files (.tsx, .ts, .jsx, .js)
+        // Look only for frontend file properties
         if (file.endsWith('.tsx') || file.endsWith('.jsx') || file.endsWith('.ts')) {
           const filePath = path.join(dirPath, file);
-          const fileData = fs.readFileSync(filePath, 'utf8');
+          
+          // Use standard plain readFileSync (never drops undefined errors)
+          const fileData = fs.readFileSync(filePath, 'utf8'); 
           combinedContent += `\n--- FILE: ${file} ---\n${fileData}\n`;
         }
       });
+    } else {
+      console.log(`Directory path not found during execution: ${dirPath}`);
     }
   } catch (error) {
-    console.error("Error reading directory:", error);
+    console.error("Error running directory scanner:", error);
   }
   return combinedContent;
 }
+
 
 app.post('/api/chat', async (req, res) => {
   try {
