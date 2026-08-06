@@ -106,8 +106,8 @@ const Hero: React.FC<Hero> = ({
                                     <div 
                                         key={partner.id || partner.name || index} 
                                         className={`flex items-center gap-2 bg-slate-100 text-slate-800 px-3 py-1.5 rounded-xl ${
-                                            !isLastItem ? 'border-r border-slate-200 pr-4' : ''
-                                        }`}
+                                            isLastItem ? 'col-span-2 justify-center sm:col-span-1' : ''
+                                        } ${!isLastItem ? 'border-r border-slate-200 pr-4' : ''}`}
                                     >
                                         {partner.icon && <span className="shrink-0 flex items-center text-slate-500">{partner.icon}</span>}
                                         <span className="font-medium text-sm leading-none">{partner.name}</span>
