@@ -6,14 +6,20 @@ function readComponentFiles(dirPath) {
   let combinedContent = '';
   try {
     if (fs.existsSync(dirPath)) {
-      const files = fs.readdirSync(dirPath);
-      files.forEach(file => {
-        if (file.endsWith('.tsx') || file.endsWith('.jsx') || file.endsWith('.ts')) {
-          const filePath = path.join(dirPath, file);
-          const fileData = fs.readFileSync(filePath, 'utf8');
-          combinedContent += `\n--- FILE: ${file} ---\n${fileData}\n`;
+      function scan(currentPath) {
+        const items = fs.readdirSync(currentPath);
+        for (const item of items) {
+          const fullPath = path.join(currentPath, item);
+          const stat = fs.statSync(fullPath);
+          if (stat.isDirectory()) {
+            scan(fullPath);
+          } else if (item.endsWith('.tsx') || item.endsWith('.jsx') || item.endsWith('.ts') || item.endsWith('.js')) {
+            const fileData = fs.readFileSync(fullPath, 'utf8');
+            combinedContent += `\n--- FILE: ${item} ---\n${fileData}\n`;
+          }
         }
-      });
+      }
+      scan(dirPath);
     }
   } catch (error) {
     console.error("Error running directory scanner:", error);
