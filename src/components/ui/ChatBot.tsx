@@ -74,7 +74,7 @@ export default function ChatBot() {
                 <span className="text-[10px] opacity-75">Online & Flexing</span>
               </div>
             </div>
-            <button 
+            <button
               onClick={() => setIsOpen(false)}
               className="text-white hover:text-pink-200 transition-colors font-bold text-lg px-2"
             >
@@ -90,17 +90,16 @@ export default function ChatBot() {
                 className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm shadow-sm ${
-                    msg.isUser
+                  className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm shadow-sm ${msg.isUser
                       ? 'bg-pink-500 text-white rounded-tr-none'
                       : 'bg-slate-800 text-slate-100 rounded-tl-none border border-slate-700/50'
-                  }`}
+                    }`}
                 >
                   {msg.text}
                 </div>
               </div>
             ))}
-            
+
             {/* Loading Indicator */}
             {isLoading && (
               <div className="flex justify-start">
