@@ -43,9 +43,10 @@ export default async function handler(req, res) {
     `;
 
     const apiKey = process.env.GEMINI_API_KEY;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+    let url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
-    const apiResponse = await fetch(url, {
+    let apiResponse = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -54,6 +55,20 @@ export default async function handler(req, res) {
         generationConfig: { temperature: 0.7 }
       })
     });
+
+    // Fallback to gemini-2.0-flash if modelName returned 404
+    if (apiResponse.status === 404) {
+      const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+      apiResponse = await fetch(fallbackUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: message }] }],
+          systemInstruction: { parts: [{ text: systemInstruction }] },
+          generationConfig: { temperature: 0.7 }
+        })
+      });
+    }
 
     const data = await apiResponse.json();
 
@@ -67,10 +82,10 @@ export default async function handler(req, res) {
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ 
-      success: false, 
-      error: "The AI engine pipeline crashed", 
-      details: error.message 
+    return res.status(500).json({
+      success: false,
+      error: "The AI engine pipeline crashed",
+      details: error.message
     });
   }
 }
