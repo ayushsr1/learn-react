@@ -7,11 +7,13 @@ import Pricing from '@/components/ui/Pricing'
 import About from '@/components/ui/About'
 import Contact from '@/components/ui/Contact'
 import Program from './components/ui/Program'
+import ChatBot from './components/ui/ChatBot'
 
 function App() {
   return (
     <main className="flex min-h-screen bg-slate-900 text-base-300 antialiased flex flex-col">
       <Navbar />
+      <ChatBot />
       <Routes>
         <Route path="/" element={<Hero />} />
         <Route path="/pricing" element={<Pricing />} />

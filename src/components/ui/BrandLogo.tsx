@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 export function BrandLogo() {
   return (
     <>
-    <Link to="/" className="flex items-center gap-2"> 
     <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-cyan-500 text-white">
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
@@ -28,7 +27,6 @@ export function BrandLogo() {
         Online Gymnastics
       </span>
     </div>
-    </Link>
     </>
   );
 }
