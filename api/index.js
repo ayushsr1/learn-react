@@ -1,35 +1,24 @@
 const express = require('express');
 const serverless = require('serverless-http');
-const { GoogleGenAI } = require('@google/genai');
 const fs = require('fs');
 const path = require('path');
 
 const app = express();
 app.use(express.json());
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-// Helper function to scan a directory and merge file contents
-// ✅ REPLACE the readComponentFiles function in api/index.js with this:
+// Helper function to scan files
 function readComponentFiles(dirPath) {
   let combinedContent = '';
   try {
-    // Double check that the folder actually exists inside the bundle
     if (fs.existsSync(dirPath)) {
       const files = fs.readdirSync(dirPath);
-      
       files.forEach(file => {
-        // Look only for frontend file properties
         if (file.endsWith('.tsx') || file.endsWith('.jsx') || file.endsWith('.ts')) {
           const filePath = path.join(dirPath, file);
-          
-          // Use standard plain readFileSync (never drops undefined errors)
-          const fileData = fs.readFileSync(filePath, 'utf8'); 
+          const fileData = fs.readFileSync(filePath, 'utf8');
           combinedContent += `\n--- FILE: ${file} ---\n${fileData}\n`;
         }
       });
-    } else {
-      console.log(`Directory path not found during execution: ${dirPath}`);
     }
   } catch (error) {
     console.error("Error running directory scanner:", error);
@@ -37,20 +26,16 @@ function readComponentFiles(dirPath) {
   return combinedContent;
 }
 
-
 app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
     if (!message) return res.status(400).json({ error: "Message is required" });
 
-    // 1. Point to your frontend components folder
-    // On Vercel, process.cwd() points to the root of your project directory
+    // 1. Scan your frontend directory
     const componentsPath = path.join(process.cwd(), 'src', 'components');
-    
-    // 2. Read and extract all code/text from your .tsx components
     const frontendCodebase = readComponentFiles(componentsPath);
 
-    // 3. Instruct Gemini to parse your frontend code for content answers
+    // 2. Format the custom personality rules and codebase background
     const systemInstruction = `
       You are the official AI chat persona for this gymnastics athlete website.
       Your personality is energetic, friendly, cute, and uses casual slang/emojis.
@@ -61,26 +46,37 @@ app.post('/api/chat', async (req, res) => {
       ${frontendCodebase || "No frontend components found."}
     `;
 
-    // 4. Send everything to Gemini 2.5 Flash
-    const aiResponse = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: message,
-      config: {
-        systemInstruction: systemInstruction,
-        temperature: 0.7
-      }
+    // 3. Make a direct secure HTTP Fetch call straight to Google Gemini API
+    const apiKey = process.env.GEMINI_API_KEY;
+    const url = `https://googleapis.com{apiKey}`;
+
+    const apiResponse = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: message }] }],
+        systemInstruction: { parts: [{ text: systemInstruction }] },
+        generationConfig: { temperature: 0.7 }
+      })
     });
 
-    return res.status(200).json({
-      success: true,
-      reply: aiResponse.text
-    });
+    const data = await apiResponse.json();
+
+    // Safety fallback parser mapping
+    if (data.candidates && data.candidates[0].content.parts[0].text) {
+      return res.status(200).json({
+        success: true,
+        reply: data.candidates[0].content.parts[0].text
+      });
+    } else {
+      throw new Error(JSON.stringify(data));
+    }
 
   } catch (error) {
     console.error(error);
     return res.status(500).json({ 
       success: false, 
-      error: "AI engine failed to read codebase", 
+      error: "The AI engine pipeline crashed", 
       details: error.message 
     });
   }
