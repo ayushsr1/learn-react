@@ -1,11 +1,10 @@
 {
   "functions": {
-    "api/index.cjs": {
+    "api/chat.js": {
       "includeFiles": "src/components/**"
     }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index.cjs" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
