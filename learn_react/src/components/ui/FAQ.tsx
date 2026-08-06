@@ -12,26 +12,26 @@ const marinaFaqs = [
   {
     question: "Why switch from traditional local gym coaching to Marina’s online platform?",
     answer:
-      "Traditional coaching often relies on outdated, one-size-fits-all routines where individual form errors get overlooked in crowded groups. We streamline your progress by focusing strictly on precision video breakdowns, targeted mobility drills, and direct 1-on-1 feedback tailored to your exact biomechanics.",
+      "Traditional coaching often relies on outdated, one-size-fits-all routines where individual form errors get overlooked in crowded groups. We streamline your progress by focusing strictly on precision video breakdowns, targeted mobility drills, and direct 1-on-1 feedback tailored to your exact biomechanics",
   },
   {
     question: "How does remote gymnastics video analysis actually work?",
-    answer: "Live Zoom Sessions - All classes are 100% live with real-time feedback.",
+    answer: "Live Zoom Sessions - All classes are 100% live with real-time feedback",
   },
   {
     question: "Is online coaching effective for beginners, or only advanced gymnasts?",
     answer:
-      "It is built for all levels! Beginners benefit from building a safe, injury-free foundation without the pressure of an intimidating gym environment, while advanced athletes get high-precision technical critiques needed to clean up competition execution scores.",
+      "It is built for all levels! Beginners benefit from building a safe, injury-free foundation without the pressure of an intimidating gym environment, while advanced athletes get high-precision technical critiques needed to clean up competition execution scores",
   },
   {
     question: "What equipment or space do I need at home to get started?",
     answer:
-      "Most core conditioning, flexibility, and basic tumbling drills require nothing more than a clear floor space and a yoga or gymnastics mat. For advanced skill feedback, you can submit footage recorded at your local open gym or training facility.",
+      "Most core conditioning, flexibility, and basic tumbling drills require nothing more than a clear floor space and a yoga or gymnastics mat",
   },
   {
     question: "Can I pause or cancel my coaching subscription at any time?",
     answer:
-      "Yes, completely flexible. You can manage your subscription, pause, or cancel at any time directly from your account settings with zero hassle or hidden cancellation fees.",
+      "Yes, completely flexible. You can manage your subscription, pause, or cancel at any time directly from your account settings with zero hassle or hidden cancellation fees",
   },
 ];
 

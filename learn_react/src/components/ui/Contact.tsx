@@ -24,7 +24,7 @@ export default function Contact() {
             Start Your Training Journey
           </h2>
           <p className="text-slate-400 text-base md:text-lg max-w-xl mx-auto">
-            Have questions about virtual video analysis, live Zoom sessions, or 1-on-1 athletic coaching? Get in touch with Marina.
+            Have questions about live online sessions or 1-on-1 private coaching ? Get in touch with Marina
           </p>
         </div>
 
@@ -47,7 +47,9 @@ export default function Contact() {
                       <polyline points="3 7 12 13 21 7" />
                     </svg>
                   </div>
-                  <span>marina@coaching.com</span>
+                  <a href="mailto:marinamostovskaa629@gmail.com" className="text-blue-400 hover:text-blue-300">
+                    marinamostovskaa629@gmail.com
+                  </a>
                 </div>
 
                 <div className="flex items-center gap-3 text-slate-300 text-sm">
@@ -68,7 +70,7 @@ export default function Contact() {
                 Remote Gymnastics
               </span>
               <h4 className="text-lg font-bold text-white">
-                Looking for Live Video Analysis?
+                Looking for online training for your kid ?
               </h4>
               <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
                 Get real-time feedback during 100% live Zoom sessions or submit skill clips for frame-by-frame breakdown.
