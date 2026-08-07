@@ -20,7 +20,7 @@ const DEFAULT_PROFILE: SoloProfile = {
   name: 'Marina Mostovskaia',
   role: 'Head Coach & Founder',
   image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800',
-  bio: 'With almost a decade of elite training experience, Marina specializes in high-performance conditioning, movement optimization, and holistic physical development. She has coached professional athletes and enthusiasts alike to reach peak physical capacity.',
+  bio: 'I am an active competitive gymnast. I know exactly how hard you need to work on the carpet for results, and I also know how to protect yourself from injuries. My mission is to give you a strong sports base, flexibility, and technique cleanup safely and with pure energy',
   stats: [
     { label: 'Years of Competitive Excellence', value: '8+' }
   ],

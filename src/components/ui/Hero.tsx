@@ -13,7 +13,6 @@ interface Hero {
     badgeText?: string;
     badgeLabel?: string;
     title?: string;
-    titleLine2?: string;
     description?: string;
     primaryButtonText?: string;
     primaryButtonHref?: string;
@@ -27,8 +26,7 @@ const Hero: React.FC<Hero> = ({
     backgroundImageUrl = pic_2,
     badgeLabel = "Limited",
     badgeText = "Only 9 Spots Available for September Group",
-    title = "Online Rhythmic Gymnastics",
-    titleLine2 = "With Marina",
+    title = "Online Rhythmic Gymnastics with Marina",
     description = "Give your daughter a strong sports base, flexibility, and perfect posture—without high offline costs or travel time. Small online group for girls aged 7–12.",
     primaryButtonText = "Book your session Now",
     primaryButtonHref = "/pricing",
@@ -63,8 +61,6 @@ const Hero: React.FC<Hero> = ({
 
                         <h1 className="sm:text-5xl md:text-6xl lg:text-7xl leading-tight text-4xl text-white tracking-tight font-instrument-serif font-normal animate-fade-slide-in-2">
                             {title}
-                            <br className="hidden sm:block" />
-                            {titleLine2}
                         </h1>
 
                         <p className="sm:text-lg animate-fade-slide-in-3 text-base text-white max-w-2xl mt-6 mx-auto">

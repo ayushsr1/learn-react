@@ -73,7 +73,7 @@ export default function Contact() {
                 Looking for online training for your kid ?
               </h4>
               <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-                Get real-time feedback during 100% live Zoom sessions or submit skill clips for frame-by-frame breakdown.
+                Get real-time feedback during 100% live Zoom sessions tailored to your goals
               </p>
             </div>
           </div>

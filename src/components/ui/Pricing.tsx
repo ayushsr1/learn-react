@@ -156,7 +156,7 @@ export const ProductPacks = () => {
                 timelineRef={timelineRef}
                 className="text-xl font-medium text-neutral-300"
               >
-                Get everything in a single purchase, No hidden fees.
+                High-performance 1-on-1 coaching for elite gymnasts
               </TimelineAnimation>
             </div>
 

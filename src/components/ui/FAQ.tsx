@@ -12,7 +12,7 @@ const marinaFaqs = [
   {
     question: "Why switch from traditional local gym coaching to Marina’s online platform?",
     answer:
-      "Traditional coaching often relies on outdated, one-size-fits-all routines where individual form errors get overlooked in crowded groups. We streamline your progress by focusing strictly on precision video breakdowns, targeted mobility drills, and direct 1-on-1 feedback tailored to your exact biomechanics",
+      "We focus strictly on live online sessions, targeted mobility drills, and direct 1-on-1 feedback tailored to your exact biomechanics, targeted mobility drills, and direct 1-on-1 feedback tailored to your exact biomechanics",
   },
   {
     question: "How does remote gymnastics video analysis actually work?",

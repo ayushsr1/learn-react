@@ -26,7 +26,7 @@ const initialItems: Item[] = [
     bgColor: 'bg-pink-300',
     iconBgColor: 'bg-pink-100',
     className: 'lg:col-span-3 sm:col-span-5 col-span-12',
-    description: 'Tailored routines and video breakdowns designed for your specific skill level and goals.',
+    description: 'Tailored routines and targeted mobility drills designed for your specific skill level and goals.',
   },
   {
     id: '3',
