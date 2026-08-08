@@ -1,6 +1,7 @@
  import { useState } from 'react';
 import { cn } from '../../lib/utils';
 import { FaInstagram, FaLinkedin, FaGlobe } from 'react-icons/fa';
+import marinaImage from '@/assets/marina.webp'; // Ensure this path is correct
 
 export interface SoloProfile {
   name: string;
@@ -19,7 +20,7 @@ export interface SoloProfile {
 const DEFAULT_PROFILE: SoloProfile = {
   name: 'Marina Mostovskaia',
   role: 'Head Coach & Founder',
-  image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800',
+  image: marinaImage,
   bio: 'I am an active competitive gymnast. I know exactly how hard you need to work on the carpet for results, and I also know how to protect yourself from injuries. My mission is to give you a strong sports base, flexibility, and technique cleanup safely and with pure energy',
   stats: [
     { label: 'Years of Competitive Excellence', value: '8+' }
@@ -69,7 +70,7 @@ export default function About({ profile = DEFAULT_PROFILE }: AboutProps) {
               {/* Main Card */}
               <div
                 className={cn(
-                  'relative aspect-[3/4] w-full rounded-2xl overflow-hidden border border-slate-800 transition-all duration-500',
+                  'relative aspect-[4/5] w-full rounded-2xl overflow-hidden border border-slate-800 transition-all duration-500',
                   isHovered ? 'ring-2 ring-teal-400/80 border-teal-400/50 shadow-2xl shadow-teal-500/10' : ''
                 )}
               >
