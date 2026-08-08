@@ -74,14 +74,18 @@ export default function About({ profile = DEFAULT_PROFILE }: AboutProps) {
                   isHovered ? 'ring-2 ring-teal-400/80 border-teal-400/50 shadow-2xl shadow-teal-500/10' : ''
                 )}
               >
-                <img
-                  src={profile.image}
-                  alt={profile.name}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                  style={{
-                    filter: isHovered ? 'grayscale(0) brightness(1)' : 'grayscale(0.6) brightness(0.85)',
-                  }}
-                />
+              <img
+                src={profile.image}
+                alt={profile.name}
+                className={`w-full h-full object-cover transition-all duration-700 
+                  /* Base style for mobile: full color and brightness */
+                  grayscale-0 brightness-100 
+                  /* Desktop only: desaturated by default, full color on hover */
+                  @media(hover:hover):grayscale-[0.6] @media(hover:hover):brightness-85 
+                  @media(hover:hover):group-hover:grayscale-0 @media(hover:hover):group-hover:brightness-100 
+                  group-hover:scale-105`
+                }
+              />              
               </div>
 
               {/* Floating Stat Card Badge */}
