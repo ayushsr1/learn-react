@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function Contact() {
+  const location = useLocation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -8,10 +10,34 @@ export default function Contact() {
     message: "",
   });
 
+    // Auto-select the service based on which button was clicked
+  useEffect(() => {
+    const selectedPlan = location.state?.selectedPlan;
+
+    if (selectedPlan === "group-session") {
+      setFormData((prev) => ({ ...prev, service: "Group Coaching" }));
+    } else if (selectedPlan === "private-coaching") {
+      setFormData((prev) => ({ ...prev, service: "1-on-1 Coaching" }));
+    }
+  }, [location.state]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form Submitted:", formData);
+
+    const phoneNumber = "38293839289";
+
+    const message = `Hello Marina,
+
+  Name: ${formData.name}
+  Email: ${formData.email}
+  Interested Program: ${formData.service}
+
+  Message:
+  ${formData.message}`;
+
+    const encodedMessage = encodeURIComponent(message);
+
+    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
   };
 
   return (
@@ -126,11 +152,9 @@ export default function Contact() {
                   value={formData.service}
                   onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                   className="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
-                >
+                >                   
                   <option value="1-on-1 Coaching">1-on-1 Live Zoom Coaching</option>
-                  <option value="Video Analysis">Remote Gymnastics Video Analysis</option>
-                  <option value="Mobility & Flexibility">Flexibility & Conditioning Program</option>
-                  <option value="General Inquiry">General Question / Other</option>
+                  <option value="Group Coaching">Live Group Coaching</option>
                 </select>
               </div>
 
