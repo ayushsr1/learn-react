@@ -24,7 +24,7 @@ export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const phoneNumber = "38293839289";
+    const phoneNumber = "+7 9891964934"; // Marina's WhatsApp number
 
     const message = `Hello Marina,
 
