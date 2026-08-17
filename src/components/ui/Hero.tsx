@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import pic_2 from "@/assets/pic_2.jpg"; 
+import TrialModal from './TrialModal';
 
 interface Partner {
     logoUrl: string;
@@ -41,9 +42,11 @@ const Hero: React.FC<Hero> = ({
         { name: "Ribbon", icon: "🎗️" }
     ]
 }) => {
+    const [isTrialOpen, setIsTrialOpen] = useState(false);
 
     return (
         <section className="w-full isolate min-h-screen overflow-hidden relative">
+            <TrialModal isOpen={isTrialOpen} onClose={() => setIsTrialOpen(false)} />
             <div className="pointer-events-none absolute inset-0 ring-1 ring-black/30" />
             <img className="absolute -z-10 h-full w-full object-cover" src={backgroundImageUrl} alt="sa" />
 
@@ -66,6 +69,16 @@ const Hero: React.FC<Hero> = ({
                         <p className="sm:text-lg animate-fade-slide-in-3 text-base text-white max-w-2xl mt-6 mx-auto">
                             {description}
                         </p>
+
+                        <div className="mt-6 flex justify-center animate-fade-slide-in-3">
+                            <button
+                                onClick={() => setIsTrialOpen(true)}
+                                className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-100 px-4 py-2 text-sm font-semibold text-slate-900 shadow-lg shadow-amber-500/20 transition-transform hover:scale-[1.02] cursor-pointer"
+                            >
+                                <span className="rounded-full bg-slate-900 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-amber-300">Trial</span>
+                                <span>Start for $20</span>
+                            </button>
+                        </div>
 
                         <div className="flex flex-col sm:flex-row sm:gap-4 mt-10 gap-3 items-center justify-center animate-fade-slide-in-4">
                             <Link
