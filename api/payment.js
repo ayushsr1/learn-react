@@ -14,9 +14,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, currency } = req.body || {};
+    const { email } = req.body || {};
 
-    if (!email || !currency) {
+    if (!email) {
       return res.status(400).json({ error: 'email and currency are required.' });
     }
 
