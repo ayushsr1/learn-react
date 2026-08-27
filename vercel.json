@@ -2,8 +2,7 @@
   "functions": {
     "api/chat.js": {
       "includeFiles": "src/**"
-    },
-    "api/payment.js": {}
+    }
   },
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
