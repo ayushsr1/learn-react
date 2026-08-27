@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import qrcodeImg from '@/assets/qrcode.png';
+import { CreditCard, Wallet } from 'lucide-react';
 
 interface TrialModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface TrialModalProps {
 export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose }) => {
   const [step, setStep] = useState<1 | 2>(1);
   const [copied, setCopied] = useState(false);
+  const [paymentError, setPaymentError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -56,11 +58,45 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      setStep(2);
+  const handleCardPayment = async () => {
+    if (!validateForm()) return;
+    setPaymentError('');
+
+    try {
+      const response = await fetch('/api/payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          offerId: '836b9fc5-7ae9-4a27-9642-592bc44072b7',
+        }),
+      });
+
+      const responseText = await response.text();
+      let payment: { paymentUrl?: string; error?: string } = {};
+
+      if (responseText) {
+        try {
+          payment = JSON.parse(responseText);
+        } catch {
+          throw new Error(`Payment service returned an invalid response (${response.status}).`);
+        }
+      }
+
+      if (!response.ok || !payment.paymentUrl) {
+        throw new Error(payment.error || `Unable to create payment (${response.status}). Please try again.`);
+      }
+
+      window.location.href = payment.paymentUrl;
+    } catch (error) {
+      setPaymentError(error instanceof Error ? error.message : 'Unable to start card payment. Please try again.');
     }
+  };
+
+  const handleUsdtPayment = () => {
+    if (!validateForm()) return;
+    setPaymentError('');
+    setStep(2);
   };
 
   const buildWhatsAppMessage = () => {
@@ -116,7 +152,7 @@ I would like to book a $20 Trial Gymnastics Session.
           </h3>
           <p className="mt-1 text-sm text-slate-400">
             {step === 1
-              ? 'Enter your details to reserve your spot with Marina'
+              ? 'Enter your details and choose how you would like to pay'
               : 'Scan the TRC-20 QR code to pay $20, then send your confirmation to Marina'}
           </p>
         </div>
@@ -129,7 +165,7 @@ I would like to book a $20 Trial Gymnastics Session.
 
         {/* Step 1: Form */}
         {step === 1 && (
-          <form onSubmit={handleFormSubmit} className="space-y-4">
+          <form onSubmit={(event) => event.preventDefault()} className="space-y-4">
             <div>
               <label className="block mb-1 text-xs font-medium text-slate-300">Your Full Name *</label>
               <input
@@ -213,46 +249,52 @@ I would like to book a $20 Trial Gymnastics Session.
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="w-full py-3.5 mt-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <span>Continue to Payment QR</span>
-              <svg className="w-4 h-4 fill-none stroke-current" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </button>
+            <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={handleCardPayment}
+                className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3.5 font-bold text-slate-950 transition-colors hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
+              >
+                <CreditCard className="h-4 w-4" />
+                <span>Pay by Card</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleUsdtPayment}
+                className="flex items-center justify-center gap-2 rounded-xl border border-amber-300/40 bg-slate-800 px-4 py-3.5 font-bold text-white transition-colors hover:border-amber-300 hover:bg-slate-700"
+              >
+                <Wallet className="h-4 w-4 text-amber-300" />
+                <span>Pay with USDT</span>
+              </button>
+            </div>
+            {paymentError && <p className="text-center text-xs text-rose-400">{paymentError}</p>}
           </form>
         )}
 
-        {/* Step 2: QR Code & WhatsApp Transmission */}
+        {/* Step 2: Payment method selection */}
         {step === 2 && (
           <div className="space-y-5">
-            {/* QR Code Container */}
-            <div className="flex flex-col items-center justify-center p-4 bg-slate-950/80 border border-slate-800 rounded-2xl">
-              <div className="relative p-3 bg-white rounded-2xl shadow-xl mb-3">
-                <img
-                  src={qrcodeImg}
-                  alt="TRON QR Code"
-                  className="w-48 h-48 object-contain rounded-lg"
-                />
-              </div>
-              <p className="text-xs font-semibold text-amber-300 uppercase tracking-wide">
-                TRON (TRC-20) Payment QR • $20
-              </p>
-              
-              {/* Address Box */}
-              <div className="mt-3 w-full flex items-center justify-between gap-2 px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs">
-                <span className="font-mono text-slate-300 truncate">
-                  {tronAddress}
-                </span>
-                <button
-                  onClick={handleCopyAddress}
-                  className="shrink-0 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-md transition-colors text-[11px] font-medium"
-                >
-                  {copied ? 'Copied!' : 'Copy Address'}
-                </button>
-              </div>
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+                <div className="relative mb-3 rounded-2xl bg-white p-3 shadow-xl">
+                  <img
+                    src={qrcodeImg}
+                    alt="TRON QR Code"
+                    className="h-48 w-48 rounded-lg object-contain"
+                  />
+                </div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-amber-300">
+                  TRON (TRC-20) Payment QR • $20
+                </p>
+
+                <div className="mt-3 flex w-full items-center justify-between gap-2 rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 text-xs">
+                  <span className="truncate font-mono text-slate-300">{tronAddress}</span>
+                  <button
+                    onClick={handleCopyAddress}
+                    className="shrink-0 rounded-md bg-slate-800 px-2.5 py-1 text-[11px] font-medium text-slate-200 transition-colors hover:bg-slate-700"
+                  >
+                    {copied ? 'Copied!' : 'Copy Address'}
+                  </button>
+                </div>
             </div>
 
             {/* Submit to Marina Actions */}
