@@ -14,15 +14,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, offerId } = req.body || {};
+    const { email, currency } = req.body || {};
 
-    if (!email || !offerId) {
-      return res.status(400).json({ error: 'email and offerId are required.' });
+    if (!email || !currency) {
+      return res.status(400).json({ error: 'email and currency are required.' });
     }
 
     const payment = await client.createOneTimePayment({
       email,
-      offerId,
       currency: Currency.USD, // Change to your currency (e.g., RUB, EUR)
     });
 
