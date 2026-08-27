@@ -67,8 +67,7 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-        email: 'customer@example.com',
-        currency: 'Currency.USD'
+        email: formData.email.trim(),
         }),
       });
 
