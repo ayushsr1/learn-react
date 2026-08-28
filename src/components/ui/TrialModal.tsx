@@ -67,9 +67,9 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-        offerId:'8acfaa63-1178-4b37-8743-594aca8a33e8',
-        currency: 'USD', // Change to your currency (e.g., RUB, EUR)
-        amount: '20'
+          email: formData.email.trim(),
+          offerId: '8acfaa63-1178-4b37-8743-594aca8a33e8',
+          currency: 'USD'
         }),
       });
 

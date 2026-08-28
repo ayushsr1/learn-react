@@ -14,12 +14,21 @@ export default async function handler(req, res) {
   }
 
   try {
+    const { email, offerId, currency } = req.body || {};
 
-    const payment = await client.createOneTimePayment({
-      offerId:'8acfaa63-1178-4b37-8743-594aca8a33e8',
-      currency: Currency.USD, // Change to your currency (e.g., RUB, EUR)
-      amount: 20
-    });
+    if (typeof email !== 'string' || !email.trim()) {
+      return res.status(400).json({ error: 'A valid email is required.' });
+    }
+
+    if (typeof offerId !== 'string' || !offerId.trim()) {
+      return res.status(400).json({ error: 'A valid offerId is required.' });
+    }
+
+    const payment = await client.createOneTimePayment(
+      email.trim(),
+      offerId.trim(),
+      currency || Currency.USD
+    );
 
     return res.status(200).json(payment);
     
