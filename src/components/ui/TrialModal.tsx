@@ -68,8 +68,12 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
         email: formData.email.trim(),
+        offerId:'3356ba84-d350-4cc0-b167-2eda31e72782',
+        currency: 'USD', // Change to your currency (e.g., RUB, EUR)
+        
         }),
       });
+
 
       const responseText = await response.text();
       let payment: { paymentUrl?: string; error?: string } = {};
