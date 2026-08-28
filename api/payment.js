@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
     const payment = await client.createOneTimePayment({
       email,
-      offer_ID:'3356ba84-d350-4cc0-b167-2eda31e72782',
+      offerId:'3356ba84-d350-4cc0-b167-2eda31e72782',
       currency: Currency.USD, // Change to your currency (e.g., RUB, EUR)
     });
 
