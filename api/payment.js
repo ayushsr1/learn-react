@@ -24,16 +24,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'A valid offerId is required.' });
     }
 
-    const payment = await client.createOneTimePayment({
-      email: 'customer@example.com',
-      offerId: 'your-offer-id',
-      currency: Currency.USD, // or Currency.EUR
-    });
-
-    // Redirect to payment page if paymentUrl is provided
-    if (payment.paymentUrl) {
-      window.location.href = payment.paymentUrl;
-    }
+    const payment = await client.createOneTimePayment(
+      email.trim(),
+      offerId.trim(),
+      currency || Currency.USD
+    );
 
     return res.status(200).json(payment);
     
