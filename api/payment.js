@@ -14,16 +14,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email } = req.body || {};
-
-    if (!email) {
-      return res.status(400).json({ error: 'email and currency are required.' });
-    }
 
     const payment = await client.createOneTimePayment({
-      email,
-      offerId:'3356ba84-d350-4cc0-b167-2eda31e72782',
+      offerId:'8acfaa63-1178-4b37-8743-594aca8a33e8',
       currency: Currency.USD, // Change to your currency (e.g., RUB, EUR)
+      amount: 20
     });
 
     return res.status(200).json(payment);
