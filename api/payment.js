@@ -1,41 +1,30 @@
 import { LavaClient, Currency } from 'lava-top-sdk';
 
-const client = new LavaClient({
-  apiKey: process.env.LAVA_API_KEY,
-});
+const client = new LavaClient({ apiKey: process.env.LAVA_API_KEY });
+
+// hardcoded HERE, not in FE
+const OFFER_ID = process.env.LAVA_OFFER_ID; // set this in Vercel env: 8acfaa63-1178-4b37-8743-594aca8a33e8
+const CURRENCY = Currency.USD; // lock it, don't take from FE
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
-
-  if (!process.env.LAVA_API_KEY) {
-    return res.status(500).json({ error: 'LAVA_API_KEY is not configured on the server.' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
   try {
-    const { email, offerId, currency } = req.body || {};
-
-    if (typeof email !== 'string' || !email.trim()) {
-      return res.status(400).json({ error: 'A valid email is required.' });
-    }
-
-    if (typeof offerId !== 'string' || !offerId.trim()) {
-      return res.status(400).json({ error: 'A valid offerId is required.' });
-    }
+    const { email } = req.body;
+    if (!email?.trim()) return res.status(400).json({ error: 'Email required' });
 
     const payment = await client.createOneTimePayment(
-      email.trim(),
-      offerId.trim(),
-      currency || Currency.USD
+      email.trim().toLowerCase(),
+      OFFER_ID,
+      CURRENCY
     );
 
     return res.status(200).json(payment);
-    
+
   } catch (error) {
-    console.error('Lava SDK Error:', error);
-    return res.status(
-      
-      500).json({ error: 'Internal Server Error' });
+    console.error('LAVA ERROR:', error.response?.data || error.message);
+    return res.status(400).json({ 
+      error: error.response?.data?.error || 'Payment creation failed' 
+    });
   }
 }

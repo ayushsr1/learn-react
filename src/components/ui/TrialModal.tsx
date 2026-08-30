@@ -10,6 +10,8 @@ interface TrialModalProps {
 export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose }) => {
   const [step, setStep] = useState<1 | 2>(1);
   const [copied, setCopied] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+
   const [paymentError, setPaymentError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
@@ -63,37 +65,34 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose }) => {
     setPaymentError('');
 
     try {
+      setIsPaying(true);
+      setPaymentError('');
+
       const response = await fetch('/api/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: formData.email.trim(),
-          offerId: '8acfaa63-1178-4b37-8743-594aca8a33e8',
-          currency: 'USD'
+          email: formData.email.trim().toLowerCase(),
         }),
       });
 
+      const data = await response.json(); // use .json() directly, no need for .text() dance
 
-      const responseText = await response.text();
-      let payment: { paymentUrl?: string; error?: string } = {};
-
-      if (responseText) {
-        try {
-          payment = JSON.parse(responseText);
-        } catch {
-          throw new Error(`Payment service returned an invalid response (${response.status}).`);
-        }
+      if (!response.ok) {
+        throw new Error(data.error || `Payment failed (${response.status})`);
       }
 
-      if (!response.ok || !payment.paymentUrl) {
-        throw new Error(payment.error || `Unable to create payment (${response.status}). Please try again.`);
+      if (!data.paymentUrl) {
+        throw new Error('Payment URL not returned by server');
       }
 
-      window.location.href = payment.paymentUrl;
+      window.location.href = data.paymentUrl;
+
     } catch (error) {
-      setPaymentError(error instanceof Error ? error.message : 'Unable to start card payment. Please try again.');
+      setPaymentError(error instanceof Error ? error.message : 'Unable to start payment');
+    } finally {
+      setIsPaying(false);
     }
-  };
 
   const handleUsdtPayment = () => {
     if (!validateForm()) return;
@@ -252,14 +251,20 @@ I would like to book a $20 Trial Gymnastics Session.
             </div>
 
             <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={handleCardPayment}
-                className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3.5 font-bold text-slate-950 transition-colors hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
-              >
-                <CreditCard className="h-4 w-4" />
-                <span>Pay by Card</span>
-              </button>
+            <button
+              type="submit"
+              disabled={isPaying || !formData.email}
+              className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3.5 font-bold text-slate-950 transition-colors hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
+            >
+              {isPaying ? (
+                'Redirecting to payment...'
+              ) : (
+                <>
+                  <CreditCard className="h-4 w-4" />
+                  <span>Pay by Card</span>
+                </>
+              )}
+            </button>
               <button
                 type="button"
                 onClick={handleUsdtPayment}
