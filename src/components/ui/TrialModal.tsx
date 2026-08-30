@@ -93,6 +93,7 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose }) => {
     } finally {
       setIsPaying(false);
     }
+  };
 
   const handleUsdtPayment = () => {
     if (!validateForm()) return;
