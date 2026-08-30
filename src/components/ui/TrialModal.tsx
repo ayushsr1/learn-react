@@ -253,19 +253,13 @@ I would like to book a $20 Trial Gymnastics Session.
 
             <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
             <button
-              type="submit"
-              disabled={isPaying || !formData.email}
-              className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3.5 font-bold text-slate-950 transition-colors hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
-            >
-              {isPaying ? (
-                'Redirecting to payment...'
-              ) : (
-                <>
-                  <CreditCard className="h-4 w-4" />
-                  <span>Pay by Card</span>
-                </>
-              )}
-            </button>
+            type="submit"
+            disabled={isPaying || !formData.email}
+            className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3.5 font-bold text-slate-950 hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
+          >
+            {isPaying ? 'Redirecting...' : <><CreditCard className="h-4 w-4" /><span>Pay by Card</span></>}
+          </button>
+
               <button
                 type="button"
                 onClick={handleUsdtPayment}
