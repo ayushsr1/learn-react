@@ -7,6 +7,7 @@ export default async function handler(req, res) {
 
     const OFFER_ID = process.env.LAVA_OFFER_ID; 
     const API_KEY = process.env.LAVA_API_KEY;
+    const AMOUNT = 20;
 
     // EXACT same call as your Swagger screenshot
     const lavaRes = await fetch('https://gate.lava.top/api/v3/invoice', {
@@ -19,6 +20,7 @@ export default async function handler(req, res) {
         email: email.trim().toLowerCase(),
         offerId: OFFER_ID,
         currency: 'USD',
+        amount: AMOUNT
         // add this if needed, swagger was sending it implicitly
         // buyerLanguage: 'EN'
       }),

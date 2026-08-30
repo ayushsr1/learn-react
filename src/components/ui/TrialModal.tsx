@@ -60,40 +60,40 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleCardPayment = async () => {
-    if (!validateForm()) return;
-    setPaymentError('');
+  // const handleCardPayment = async () => {
+  //   if (!validateForm()) return;
+  //   setPaymentError('');
 
-    try {
-      setIsPaying(true);
-      setPaymentError('');
+  //   try {
+  //     setIsPaying(true);
+  //     setPaymentError('');
 
-      const response = await fetch('/api/payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: formData.email.trim().toLowerCase(),
-        }),
-      });
+  //     const response = await fetch('/api/payment', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         email: formData.email.trim().toLowerCase(),
+  //       }),
+  //     });
 
-      const data = await response.json(); // use .json() directly, no need for .text() dance
+  //     const data = await response.json(); // use .json() directly, no need for .text() dance
 
-      if (!response.ok) {
-        throw new Error(data.error || `Payment failed (${response.status})`);
-      }
+  //     if (!response.ok) {
+  //       throw new Error(data.error || `Payment failed (${response.status})`);
+  //     }
 
-      if (!data.paymentUrl) {
-        throw new Error('Payment URL not returned by server');
-      }
+  //     if (!data.paymentUrl) {
+  //       throw new Error('Payment URL not returned by server');
+  //     }
 
-      window.location.href = data.paymentUrl;
+  //     window.location.href = data.paymentUrl;
 
-    } catch (error) {
-      setPaymentError(error instanceof Error ? error.message : 'Unable to start payment');
-    } finally {
-      setIsPaying(false);
-    }
-  };
+  //   } catch (error) {
+  //     setPaymentError(error instanceof Error ? error.message : 'Unable to start payment');
+  //   } finally {
+  //     setIsPaying(false);
+  //   }
+  // };
 
   const handleUsdtPayment = () => {
     if (!validateForm()) return;
