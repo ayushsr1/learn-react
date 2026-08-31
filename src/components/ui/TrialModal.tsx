@@ -60,40 +60,50 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // const handleCardPayment = async () => {
-  //   if (!validateForm()) return;
-  //   setPaymentError('');
+  const handleCardPayment = async () => {
+  if (!validateForm()) return;
+  setPaymentError('');
 
-  //   try {
-  //     setIsPaying(true);
-  //     setPaymentError('');
+  try {
+    setIsPaying(true);
+    
+    const response = await fetch('/api/payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: formData.email.trim().toLowerCase(),
+      }),
+    });
 
-  //     const response = await fetch('/api/payment', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({
-  //         email: formData.email.trim().toLowerCase(),
-  //       }),
-  //     });
+    const text = await response.text(); // <-- don't use .json() directly
+    let data: any = {};
+    
+    if (text) {
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(`Server returned non-JSON: ${text.slice(0, 100)}`);
+      }
+    }
 
-  //     const data = await response.json(); // use .json() directly, no need for .text() dance
+    if (!response.ok) {
+      throw new Error(data.error || data.details?.error || `Payment failed (${response.status})`);
+    }
 
-  //     if (!response.ok) {
-  //       throw new Error(data.error || `Payment failed (${response.status})`);
-  //     }
+    if (!data.paymentUrl) {
+      console.log('LAVA response without paymentUrl:', data);
+      throw new Error('Payment URL not returned by server');
+    }
 
-  //     if (!data.paymentUrl) {
-  //       throw new Error('Payment URL not returned by server');
-  //     }
+    window.location.href = data.paymentUrl;
 
-  //     window.location.href = data.paymentUrl;
-
-  //   } catch (error) {
-  //     setPaymentError(error instanceof Error ? error.message : 'Unable to start payment');
-  //   } finally {
-  //     setIsPaying(false);
-  //   }
-  // };
+  } catch (error) {
+    console.error(error);
+    setPaymentError(error instanceof Error ? error.message : 'Unable to start payment');
+  } finally {
+    setIsPaying(false);
+  }
+};
 
   const handleUsdtPayment = () => {
     if (!validateForm()) return;
@@ -252,13 +262,15 @@ I would like to book a $20 Trial Gymnastics Session.
             </div>
 
             <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
-            <button
-            type="submit"
-            disabled={isPaying || !formData.email}
-            className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3.5 font-bold text-slate-950 hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
-          >
-            {isPaying ? 'Redirecting...' : <><CreditCard className="h-4 w-4" /><span>Pay by Card</span></>}
-          </button>
+
+                         
+              <button
+              type="submit"
+              onClick={handleCardPayment}
+              disabled={isPaying || !formData.email}
+              className="flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3.5 font-bold text-slate-950 hover:bg-amber-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400">                          
+              {isPaying ? 'Redirecting...' : <><CreditCard className="h-4 w-4" /><span>Pay by Card</span></>}
+              </button>
 
               <button
                 type="button"
